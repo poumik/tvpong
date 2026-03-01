@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'VT323', monospace;
+    overflow: hidden; /* Prevent scrollbars from appearing */
+    color: #ffffff;
+    background: radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 70%, #0a0a0a 100%);
+}
+
+.tv-frame-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    z-index: 3;
+    pointer-events: none;
+    user-select: none;
+}
+
+.game-container {
+    position: absolute;
+    left: calc(50vw - 365px - 96px); /* (710+20)/2 = 365, move left by 1 inch (96px) */
+    top: calc(50vh - 290px + 5px);   /* (520+60)/2 = 290, move down by 5px */
+    width: 730px; /* 710px canvas + 20px padding */
+    height: 580px; /* 520px canvas + 60px padding */
+    z-index: 2;
+    background: #000;
+}
+
+/* Responsive canvas positioning and scaling for TV screen area */
+#gameCanvas {
+    position: absolute;
+    left: 10px;
+    top: 30px;
+    background: transparent;
+    display: block;
+    image-rendering: pixelated;
+    filter: contrast(1.2) brightness(1.1);
+    border: none;
+    border-radius: 0;
+    z-index: 1; /* Keep canvas behind popups */
+}
+
+.scanlines {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    border-radius: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+.instructions-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 4px solid #ffffff;
+    border-radius: 20px;
+    padding: 30px 40px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
+    box-shadow:
+        0 0 20px #ffffff,
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    z-index: 10;
+    line-height: 1.8;
+}
+
+.instructions-popup h2 {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 32px;
+    text-shadow: 0 0 10px #ffffff;
+}
+
+.instructions-popup p, .instructions-popup .start-prompt {
+    font-size: 24px;
+}
+
+.start-prompt {
+    margin-top: 25px;
+    font-size: 28px !important;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 4px solid #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    display: none;
+    color: #ffffff;
+    font-size: 26px;
+    box-shadow:
+        0 0 20px #ffffff,
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    z-index: 10;
+}
+
+.game-over h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 36px;
+    text-shadow: 0 0 15px #ffffff;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 15px #ffffff; }
+    to { text-shadow: 0 0 25px #ffffff, 0 0 35px #ffffff; }
+}
+
+.restart-btn {
+    background: #000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 15px 30px;
+    font-size: 22px;
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+}
+
+.restart-btn:hover {
+    background: #ffffff;
+    color: #000;
+    box-shadow: 0 0 20px #ffffff;
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 26px;
+    color: #ffffff;
+    letter-spacing: 3px;
+    padding-bottom: 15px;
+}
+
+/* No Frame Mode */
+body.no-frame .tv-frame-img {
+    display: none;
+}
+
+body.no-frame .game-container {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Touch Controls (Hidden on Desktop) */
+.touch-controls {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-sizing: border-box;
+    z-index: 20;
+    pointer-events: none; /* Let clicks pass through container */
+}
+
+.touch-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    pointer-events: auto; /* Re-enable for buttons */
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    color: white;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    touch-action: manipulation; /* Improves touch response */
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.touch-btn:active {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Mobile / Tablet Responsive Styles */
+@media (max-width: 1024px) {
+    /* Force hide TV frame on mobile to maximize screen space */
+    .tv-frame-img {
+        display: none !important;
+    }
+
+    /* Center and scale the game container */
+    .game-container {
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin: 0 auto;
+        width: 95vw;
+        height: auto;
+        aspect-ratio: 730 / 580;
+        max-height: 80vh; /* Leave room for controls */
+    }
+
+    #gameCanvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .touch-controls {
+        display: flex;
+    }
+
+}

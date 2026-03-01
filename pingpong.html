@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV PONG - 1975</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="no-frame">
+    <img src="assets/tv-set.png" alt="TV Frame" class="tv-frame-img">
+    <div class="game-container">
+        <canvas id="gameCanvas" width="710" height="520"></canvas>
+        <div class="scanlines"></div>
+        <div class="instructions-popup" id="instructionsPopup">
+            <h2>CONTROLS</h2>
+            <p>PLAYER 1: A/Z KEYS<br>PLAYER 2: K/M KEYS</p>
+            <p>P - PAUSE | R - RESTART<br>S - SOUND | F - TV-FRAME</p>
+            <p>FIRST PLAYER WHO GETS 10 POINTS WINS!</p>
+            <div class="start-prompt">PRESS SPACE TO START</div>
+        </div>
+        <div class="game-over" id="gameOver">
+            <h2 id="winnerText">GAME OVER</h2>
+            <p>FIRST TO 10 POINTS WINS</p>
+            <button class="restart-btn" onclick="resetGame()">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <div class="touch-controls" id="touchControls">
+        <div class="touch-area left">
+            <button id="p1-up" class="touch-btn">▲</button>
+            <button id="p1-down" class="touch-btn">▼</button>
+        </div>
+        <div class="touch-area right">
+            <button id="p2-up" class="touch-btn">▲</button>
+            <button id="p2-down" class="touch-btn">▼</button>
+        </div>
+    </div>
+
+    <script src="js/pingpong.js" defer></script>
+</body>
+</html>
